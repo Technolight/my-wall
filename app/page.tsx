@@ -5,6 +5,10 @@ import Image from "next/image";
 import Feed from "@/components/feed";
 import { ImageWithSkeleton } from "@/components/skeletonImage";
 
+export const metadata = {
+  title: "Gab's wall",
+};
+
 export default function Home() {
   return (
     <div className="justify-items-center grid grid-cols-1 min-h-screen gap-4 drop-shadow-lg">

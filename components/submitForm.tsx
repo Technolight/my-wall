@@ -36,10 +36,9 @@ const SubmitForm = () => {
       }
     }
 
-    // Insert
     const { error } = await supabase.from("posts").insert({
       body: text,
-      image_url: imageUrl, // never undefined
+      image_url: imageUrl,
     });
 
     if (error) console.error("Error posting:", error);
