@@ -1,7 +1,11 @@
+// next.config.mjs
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {NextConfig} */
+const nextConfig = {
+  images: {
+    domains: ["ebvzynyukpqmgyiinxrn.supabase.co"],
+  },
 };
 
 export default nextConfig;
