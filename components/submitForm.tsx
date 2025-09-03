@@ -10,8 +10,9 @@ const MAX_CHARS = 280;
 const SubmitForm = () => {
   const [text, setText] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const charRemaining = MAX_CHARS - text.length;
   const [loading, setLoading] = useState(false);
+
+  const charRemaining = MAX_CHARS - text.length;
 
   const handleSubmit = async () => {
     if (!text.trim() && !imageFile) return;
@@ -66,7 +67,11 @@ const SubmitForm = () => {
         {charRemaining} characters remaining
       </p>
 
-      <ImageDropArea className="h-40 w-full" onFileSelect={setImageFile} />
+      <ImageDropArea
+        file={imageFile}
+        className="h-40 w-full"
+        onFileSelect={setImageFile}
+      />
 
       <Button
         onClick={handleSubmit}

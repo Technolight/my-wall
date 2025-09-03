@@ -1,49 +1,41 @@
 "use client";
 
-import { useCallback, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
-import { X } from "lucide-react"; // optional: a small "X" icon
+import { X } from "lucide-react";
 
 interface ImageDropAreaProps {
   className?: string;
+  file: File | null;
   onFileSelect: (file: File | null) => void;
 }
 
-export function ImageDropArea({ className, onFileSelect }: ImageDropAreaProps) {
-  const [imageFile, setImageFile] = useState<File | null>(null);
+export function ImageDropArea({
+  className,
+  file,
+  onFileSelect,
+}: ImageDropAreaProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0] ?? null;
-      setImageFile(file);
-      onFileSelect(file);
-    },
-    [onFileSelect]
-  );
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDrop: (acceptedFiles) => {
+      onFileSelect(acceptedFiles[0] ?? null);
+    },
     accept: { "image/*": [] },
+    multiple: false,
   });
 
-  // Create preview URL
   useEffect(() => {
-    if (!imageFile) {
+    if (!file) {
       setPreviewUrl(null);
       return;
     }
-    const url = URL.createObjectURL(imageFile);
+    const url = URL.createObjectURL(file);
     setPreviewUrl(url);
 
     return () => URL.revokeObjectURL(url);
-  }, [imageFile]);
-
-  const removeImage = () => {
-    setImageFile(null);
-    onFileSelect(null);
-  };
+  }, [file]);
 
   return (
     <div className={cn("relative", className)}>
@@ -56,7 +48,7 @@ export function ImageDropArea({ className, onFileSelect }: ImageDropAreaProps) {
           />
           <button
             type="button"
-            onClick={removeImage}
+            onClick={() => onFileSelect(null)}
             className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/70 transition"
           >
             <X size={16} />
